@@ -1,0 +1,91 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Eagle Tool</title>
+  <link rel="stylesheet" href="styles.css?v=1.0">
+  <!--[if lt IE 9]>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+</head>
+
+<body>
+	<div id="header">
+		<h1>Eagle Scripting Tools</h1>
+	</div>
+
+	<div id="nav">
+		<form>
+			<div>
+				<label>
+					<span>PCB Width,Height</span>
+					<br />
+					<input id="pcbw" type="text" name="pcbw" value="80" onchange="RefreshPreview()" />
+					,
+					<input id="pcbh" type="text" name="pcbh" value="80" onchange="RefreshPreview()" />
+				</label>
+
+				<label>
+					<span>Center X,Y</span>
+					<br />
+					<input id="centerx" type="text" name="centerx" value="40" onchange="RefreshPreview()" />
+					,
+					<input id="centery" type="text" name="centery" value="40" onchange="RefreshPreview()" />
+				</label>
+
+				<label>
+					<span>Circle Arc Start,End</span>
+					<br />
+					<input id="anglestart" type="number" name="anglestart" min="0" max="360" step="45" value="0" onchange="RefreshPreview()" />
+					,
+					<input id="angleend" type="number" name="angleend" min="0" max="360" step="45" value="360" onchange="RefreshPreview()" />
+				</label>
+
+				<label>
+					<span>Circle Radius</span>
+					<br />
+					<input id="radius" type="text" name="radius" value="30" onchange="RefreshPreview()" />
+				</label>
+
+				<label>
+					<span>No of Steps</span>
+					<br />
+					<input id="steps" type="number" name="steps" min="1" max="256" value="12" onchange="RefreshPreview()" />
+				</label>
+
+				<label>
+					<span>Part Name</span>
+					<br />
+					<input id="part" type="text" name="part" value="LED1" onchange="RefreshPreview()" />
+				</label>
+
+				<label>
+					<span>Rotate part enable</span>
+					<br />
+					<input id="rotateenable" type="checkbox" name="rotateenable" value="1" onchange="RefreshPreview()" />
+				</label>
+
+				<label>
+					<span>Rotate part offset</span>
+					<br />
+					<input id="rotateoffset" type="number" name="rotateoffset" min="0" max="360" step="45" value="0" onchange="RefreshPreview()" />
+				</label>
+
+			</div>
+		</form>
+	</div>
+
+	<div id="section">
+		<canvas id="preview" width="400" height="400">
+			Canvas not supported :-(
+		</canvas>
+	</div>
+
+	<div id="footer">
+		<input type="text" id="cmd" style="width:500px;">
+	</div>
+
+	<script src="eagletools.js"></script>
+</body>
+</html>

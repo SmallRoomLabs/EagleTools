@@ -1,0 +1,41 @@
+/*
+ * Stylesheet for EagleTools by mats.engstrom@gmail.com
+ * https://github.com/SmallRoomLabs/EagleTools
+ */
+
+#header {
+    text-align: center;
+    background-color: #555;
+}
+
+#nav {
+    width: 250px;
+    float: left;
+    padding: 5px;
+    background-color: #777;
+}
+
+#section {
+    float: left;
+    padding: 0px;
+    background-color: #999;
+}
+
+#footer {
+    clear: both;
+    text-align: center;
+    padding: 5px;
+    background-color: #aaa;
+}
+
+input {
+    width: 40px;
+    border: 1px solid #999;
+    height: 20px;
+}
+
+label {
+    display: block;
+    white-space: nowrap;
+    margin-bottom: 10px;
+}
