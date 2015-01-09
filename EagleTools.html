@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Eagle Tools</title>
+	<style type="text/css" media="screen">
+	html {
+	}
+	body {
+	}
+	#header {
+	    text-align:center;
+	    background-color: #555;
+	}
+	#nav {
+	    width:250px;
+	    float:left;
+	    padding:5px; 
+	    background-color: #777;
+	}
+	#section {
+	    float:left;
+	    padding:0px; 
+	    background-color: #999;
+	}
+	#footer {
+	    clear:both;
+	    text-align:center;
+	    padding:5px; 
+	    background-color: #aaa;
+	}
+	input {
+		width:40px;
+		Xdisplay:block;
+		border: 1px solid #999;
+		height: 20px;
+	}
+	label {
+		display:block;
+		white-space:nowrap;
+	}
+
+	</style>
+</head>
+
+<body>
+
+<div id="header">
+<h1>Eagle Scripting Tools</h1>
+</div>
+
+<div id="nav">
+<form>
+<div>
+<label>
+<span>PCB Width,Height</span>
+<br />
+<input id="pcbw" type="text" name="pcbw" value="400" onchange="RefreshPreview()" />
+,
+<input id="pcbh" type="text" name="pcbh" value="400" onchange="RefreshPreview()" />
+</label>
+
+<label>
+<span>Center X,Y</span>
+<br />
+<input id="centerx" type="text" name="centerx" value="200" onchange="RefreshPreview()" />
+,
+<input id="centery" type="text" name="centery" value="200" onchange="RefreshPreview()" />
+</label>
+
+<label>
+<span>Circle Arc Start,End</span>
+<br />
+<input id="anglestart" type="number" name="anglestart" min="0" max="360" step="45" value="0" onchange="RefreshPreview()" />
+,
+<input id="angleend" type="number" name="angleend" min="0" max="360" step="45" value="360" onchange="RefreshPreview()" />
+</label>
+
+<label>
+<span>Circle Radius</span>
+<br />
+<input id="radius" type="text" name="radius" value="190" onchange="RefreshPreview()" />
+</label>
+
+<label>
+<span>No of Steps</span>
+<br />
+<input id="steps" type="number" name="steps" min="1" max="256" value="4" onchange="RefreshPreview()" />
+</label>
+
+<label>
+<span>Part Name</span>
+<br />
+<input id="part" type="text" name="part" value="LED1" onchange="RefreshPreview()" />
+</label>
+
+<label>
+<input type="button" value="Submit Form" />
+</label>
+
+</div>
+</form>
+</div>
+
+<div id="section">
+	<canvas id="preview" width="400" height="400">
+		Canvas not supported :-(
+	</canvas>
+</div>
+
+<div id="footer">
+By Mats Engstrom mats.engstrom@gmail.com
+</div>
+
+</body>
+
+<script>
+
+// Return the value of the specified form field as an float and update it back
+// to the field to remove any invalid characters
+function getAndUpdateNumericFormField(name) {
+	var v=parseFloat(document.getElementById(name).value);
+	document.getElementById(name).value=v;
+	return v;
+}
+
+// Return the value of the specified form field as an space trimmed string and 
+// update it back to the field trimmed
+function getAndUpdateStringFormField(name) {
+	var v=document.getElementById(name).value.trim();
+	document.getElementById(name).value=v;
+	return v;
+}
+
+// Converts numeric degrees to radians
+if (typeof(Number.prototype.toRad) === "undefined") {
+  Number.prototype.toRad = function() {
+    return this * Math.PI / 180.0;
+  }
+}
+
+function RefreshPreview() {
+	// PCB size in mm
+	var pcbW=getAndUpdateNumericFormField("pcbw");
+	var pcbH=getAndUpdateNumericFormField("pcbh");
+	// Circle/arc center position in mm
+	var centerX=getAndUpdateNumericFormField("centery");			
+	var centerY=getAndUpdateNumericFormField("centerx");
+	// Circle/arc radius in mm
+	var radius=getAndUpdateNumericFormField("radius");
+	// Circle/arc start and end positios in degrees
+	// 0=12 o'clock, 90=3 o'clock, 180=6 o'clock
+	var angleStart=getAndUpdateNumericFormField("anglestart");
+	var angleEnd=getAndUpdateNumericFormField("angleend");
+	// How many items/points should there be on the circle/arc
+	var angleSteps=getAndUpdateNumericFormField("steps");
+	// Size of each item/dot in mm, used for preview only
+	var dotsize=6;
+	// Name Eagle part to be handled
+	var part=getAndUpdateStringFormField("part");
+
+	var canvas=document.getElementById('preview');
+	var c=canvas.getContext('2d');
+	c.fillStyle='#000000';
+	c.fillRect(0,0,canvas.width,canvas.height);
+
+	var radAngleStart=(angleStart-90).toRad();
+	var radAngleEnd=(angleEnd-90).toRad();
+
+	// If a full circle is requested then we need to reduce the step size
+	// so the first and last place dosen't overlap
+	var fullCircleAdjust=1;
+	if (angleStart%360==angleEnd%360) fullCircleAdjust=0;
+
+	var radStepAngle=(radAngleEnd-radAngleStart)/(angleSteps-fullCircleAdjust);
+	var radAngle=radAngleStart;
+
+	console.log("radStepAngle="+radStepAngle);
+
+	// Extract Part name and number
+	var myPart=part;
+	var myPartNumber=0;
+	var multiplier=1;
+	while (1) {
+		var ch=myPart.substr(-1,1);
+		if (ch>='0' && ch<='9') {
+			myPartNumber+=parseInt(ch)*multiplier;
+			multiplier*=10;
+			myPart=myPart.substr(0,myPart.length-1);
+		} else {
+			break;
+		}
+	}
+
+//	console.log("myPart="+myPart+" myPartNumber="+myPartNumber);
+
+	for (var i=0; i<angleSteps; i++) {
+		console.log("radAngle="+radAngle);
+	    var myX = centerX + radius * Math.cos(radAngle);
+    	var myY = centerY + radius * Math.sin(radAngle);
+//    	console.log("MOVE "+myPart+myPartNumber+" ("+myX+" "+myY+")");
+		c.fillStyle='#FF0000';
+		c.fillRect(myX-dotsize/2,myY-dotsize/2,dotsize,dotsize);
+		radAngle+=radStepAngle;
+		myPartNumber++;
+	}
+
+}
+</script>
+
+
+</html>
