@@ -24,17 +24,37 @@ if (typeof(Number.prototype.toRad) === "undefined") {
   }
 }
 
+var pcbtype='pcbsquare';
+
+function UpdatePCBtype() {
+	pcbtype=document.getElementById("pcbtype").value;
+	if (pcbtype=="pcbsquare") {
+		document.getElementById("pcbsquare").style.display='block';
+		document.getElementById("pcbround").style.display='none';
+	}
+	if (pcbtype=="pcbround") {
+		document.getElementById("pcbsquare").style.display='none';
+		document.getElementById("pcbround").style.display='block';
+	}
+	RefreshPreview();
+}
+
+
 
 //
 // Redraw the preview canvas according to the values from the form fields
 //
 function RefreshPreview() {
+    // Canvas size for scaling factors
+    var canvasW=400;
+    var canvasH=400;
 	// PCB size in mm
 	var pcbW=getAndUpdateNumericFormField("pcbw");
 	var pcbH=getAndUpdateNumericFormField("pcbh");
+	var pcbR=getAndUpdateNumericFormField("pcbr");
 	// Circle/arc center position in mm
-	var centerX=getAndUpdateNumericFormField("centery");			
-	var centerY=getAndUpdateNumericFormField("centerx");
+	var centerX=getAndUpdateNumericFormField("centerx");			
+	var centerY=getAndUpdateNumericFormField("centery");
 	// Circle/arc radius in mm
 	var radius=getAndUpdateNumericFormField("radius");
 	// Circle/arc start and end positios in degrees
@@ -52,11 +72,18 @@ function RefreshPreview() {
 	// The rotation offset for the first part
 	var rotateOffset=getAndUpdateNumericFormField("rotateoffset");
 
-//	var partType="circle";
-	var partType="rectangle"
+	var partType="circle";
+//	var partType="rectangle"
 	var partColor="magenta";
 
 	console.log("----------------------------");
+	
+	// Calculate the correct scaling factor to utilize the maximum of the canvas size
+	if (canvasW/pcbW > canvasH/pcbH) {
+        var scale=canvasH/pcbH;
+	} else {
+        var scale=canvasW/pcbW;
+	}
 
 	var canvas=document.getElementById('preview');
 	var ctx=canvas.getContext('2d');
@@ -91,7 +118,22 @@ function RefreshPreview() {
 
 	partAngle=rotateOffset;
 
+	// Clear canvas and draw the pcb
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
+	ctx.fillStyle='#58FA58';
+	if (pcbtype=='pcbsquare') {
+		ctx.beginPath();
+		ctx.fillRect(0, 0, pcbW*scale,pcbH*scale);
+		ctx.stroke();
+		ctx.closePath();
+	}
+	if (pcbtype=='pcbround') {
+		ctx.beginPath();
+		ctx.arc(centerX*scale, centerY*scale, pcbR*scale, 0, Math.PI*2, true);
+      	ctx.fill();
+      	ctx.closePath();
+	}
+
 	ctx.fillStyle=partColor;
 	ctx.strokeStyle=partColor;
 	ctx.beginPath();
@@ -102,18 +144,21 @@ function RefreshPreview() {
     	cmd+="MOVE '"+myPart+myPartNumber+"' ("+(+myX.toFixed(3))+" "+(+myY.toFixed(3))+");";
     	if (rotateEnable) cmd+="ROTATE =R"+partAngle+" '"+myPart+myPartNumber+"';";
 		if (partType=="rectangle") {
-			ctx.rect(myX-dotsize/2,myY-dotsize/2,dotsize,dotsize);
+			ctx.beginPath();
+			ctx.rect((myX*scale)-dotsize/2,(myY*scale)-dotsize/2,dotsize,dotsize);
 			ctx.stroke();
+			ctx.closePath();
 		} else if (partType=="circle") {
-			ctx.arc(myX, myY, dotsize, 0, Math.PI*2, true); 
+			ctx.beginPath();
+			ctx.arc(myX*scale, myY*scale, dotsize*scale, 0, Math.PI*2, true); 
 			ctx.stroke();
+			ctx.closePath();
 		}
 		angle-=angleDelta;
 		partAngle+=angleDelta;
 		myPartNumber++;
 	}
-	ctx.closePath();
-	document.getElementById("cmd").value=cmd;
+//	document.getElementById("cmd").innerHTML=cmd;
 }
 
 RefreshPreview();

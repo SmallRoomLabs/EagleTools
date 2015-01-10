@@ -19,11 +19,27 @@
 		<form>
 			<div>
 				<label>
+					<span>PCB type</span>
+					<br />
+					<select name="pcbtype" id="pcbtype" onchange="UpdatePCBtype()">
+					  <option value="pcbsquare">Rectangular</option>
+					  <option value="pcbround">Round</option>
+					</select>
+				</label>
+
+				<label id="pcbsquare" style="display:block">
 					<span>PCB Width,Height</span>
 					<br />
 					<input id="pcbw" type="text" name="pcbw" value="80" onchange="RefreshPreview()" />
 					,
 					<input id="pcbh" type="text" name="pcbh" value="80" onchange="RefreshPreview()" />
+				</label>
+
+
+				<label id="pcbround" style="display:none">
+					<span>PCB Radius</span>
+					<br />
+					<input id="pcbr" type="text" name="pcbr" value="40" onchange="RefreshPreview()" />
 				</label>
 
 				<label>
@@ -77,13 +93,11 @@
 	</div>
 
 	<div id="section">
-		<canvas id="preview" width="400" height="400">
-			Canvas not supported :-(
-		</canvas>
+		<canvas id="preview" width="400" height="400">Canvas not supported :-(</canvas>
 	</div>
 
 	<div id="footer">
-		<input type="text" id="cmd" style="width:500px;">
+		mats.engstrom@gmail.com | https://github.com/SmallRoomLabs
 	</div>
 
 	<script src="eagletools.js"></script>
