@@ -88,6 +88,12 @@
 					<input id="rotateoffset" type="number" name="rotateoffset" min="0" max="360" step="45" value="0" onchange="RefreshPreview()" />
 				</label>
 
+				<label>
+					<span>Part radius</span>
+					<br />
+					<input id="partradius" type="number" name="partradius" min="1" max="100" step="1" value="5" onchange="RefreshPreview()" />
+				</label>
+
 			</div>
 		</form>
 	</div>
@@ -97,9 +103,10 @@
 	</div>
 
 	<div id="footer">
-		mats.engstrom@gmail.com | https://github.com/SmallRoomLabs
+		<button id="copy-button" data-clipboard-text="Copy Me!" title="Click to copy me.">Copy to Clipboard</button>
+		<p id="cmd"></p>
 	</div>
-
+	<script src="ZeroClipboard.min.js"></script>
 	<script src="eagletools.js"></script>
 </body>
 </html>

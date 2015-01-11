@@ -63,18 +63,20 @@ function RefreshPreview() {
 	var angleEnd=getAndUpdateNumericFormField("angleend");
 	// How many items/points should there be on the circle/arc
 	var angleSteps=getAndUpdateNumericFormField("steps");
-	// Size of each item/dot in mm, used for preview only
-	var dotsize=6;
 	// Name Eagle part to be handled
 	var part=getAndUpdateStringFormField("part");
 	// If the parts are to be rotated ot not
 	var rotateEnable=document.getElementById("rotateenable").checked;
 	// The rotation offset for the first part
 	var rotateOffset=getAndUpdateNumericFormField("rotateoffset");
+	// The radius of a circular part
+	var partR=getAndUpdateNumericFormField("partradius");
+	
 
 	var partType="circle";
 //	var partType="rectangle"
 	var partColor="magenta";
+
 
 	console.log("----------------------------");
 	
@@ -96,8 +98,6 @@ function RefreshPreview() {
 	// so the first and last place dosen't overlap
 	var fullCircleAdjust=1;
 	if (((angleS-angleE)%360)==0) fullCircleAdjust=0;
-	console.log("fullCircleAdjust="+fullCircleAdjust+" S="+(angleS%360)+" E="+(angleE%360));
-
 	var angleDelta=(angleE-angleS)/(angleSteps-fullCircleAdjust);
 	var angle=angleS;
 
@@ -116,7 +116,8 @@ function RefreshPreview() {
 		}
 	}
 
-	partAngle=rotateOffset;
+	// Pre-rotate the part
+	partAngle=-rotateOffset;
 
 	// Clear canvas and draw the pcb
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -145,20 +146,34 @@ function RefreshPreview() {
     	if (rotateEnable) cmd+="ROTATE =R"+partAngle+" '"+myPart+myPartNumber+"';";
 		if (partType=="rectangle") {
 			ctx.beginPath();
-			ctx.rect((myX*scale)-dotsize/2,(myY*scale)-dotsize/2,dotsize,dotsize);
+			ctx.rect((myX*scale)-(partR*scale)/2,(myY*scale)-(partR*scale)/2,(partR*scale),(partR*scale));
 			ctx.stroke();
 			ctx.closePath();
 		} else if (partType=="circle") {
 			ctx.beginPath();
-			ctx.arc(myX*scale, myY*scale, dotsize*scale, 0, Math.PI*2, true); 
+			ctx.arc(myX*scale, myY*scale, partR*scale, 0, Math.PI*2, true); 
 			ctx.stroke();
 			ctx.closePath();
 		}
 		angle-=angleDelta;
-		partAngle+=angleDelta;
+		partAngle-=angleDelta;
 		myPartNumber++;
 	}
-//	document.getElementById("cmd").innerHTML=cmd;
+	document.getElementById("cmd").innerHTML=cmd;
 }
+
+
+ var client = new ZeroClipboard( document.getElementById("copy-button") );
+
+// client.on( "ready", function( readyEvent ) {
+//   alert( "ZeroClipboard SWF is ready!" );
+
+//   client.on( "aftercopy", function( event ) {
+//     // `this` === `client`
+//     // `event.target` === the element that was clicked
+//     event.target.style.display = "none";
+//     alert("Copied text to clipboard: " + event.data["text/plain"] );
+//   } );
+// } );
 
 RefreshPreview();
