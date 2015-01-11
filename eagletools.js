@@ -187,7 +187,7 @@ function RefreshPreview() {
 		ctx.beginPath();
 		if (parttype=="rectangle") {
 			drawRotatedRect(ctx, x*scale, y*scale, partW*scale, partH*scale, -partAngle);
-//		} else if (parttype=="circle") {
+		} else if (parttype=="circle") {
 			ctx.arc(x*scale, y*scale, partR*scale, 0, Math.PI*2, true); 
 			ctx.stroke();
 		}
