@@ -21,77 +21,94 @@
 				<label>
 					<span>PCB type</span>
 					<br />
-					<select name="pcbtype" id="pcbtype" onchange="UpdatePCBtype()">
-					  <option value="pcbsquare">Rectangular</option>
-					  <option value="pcbround">Round</option>
+					<select id="pcb_type" onchange="UpdatePCBtype()">
+					  <option value="rectangle">Rectangular</option>
+					  <option value="circle">Round</option>
 					</select>
 				</label>
 
-				<label id="pcbsquare" style="display:block">
+				<label id="pcb_rectangle" style="display:block">
 					<span>PCB Width,Height</span>
 					<br />
-					<input id="pcbw" type="text" name="pcbw" value="80" onchange="RefreshPreview()" />
+					<input id="pcbw" type="text" value="80" onchange="RefreshPreview()" />
 					,
-					<input id="pcbh" type="text" name="pcbh" value="80" onchange="RefreshPreview()" />
+					<input id="pcbh" type="text" value="80" onchange="RefreshPreview()" />
 				</label>
 
 
-				<label id="pcbround" style="display:none">
+				<label id="pcb_circle" style="display:none">
 					<span>PCB Radius</span>
 					<br />
-					<input id="pcbr" type="text" name="pcbr" value="40" onchange="RefreshPreview()" />
+					<input id="pcbr" type="text" value="40" onchange="RefreshPreview()" />
 				</label>
 
 				<label>
 					<span>Center X,Y</span>
 					<br />
-					<input id="centerx" type="text" name="centerx" value="40" onchange="RefreshPreview()" />
+					<input id="centerx" type="text" value="40" onchange="RefreshPreview()" />
 					,
-					<input id="centery" type="text" name="centery" value="40" onchange="RefreshPreview()" />
+					<input id="centery" type="text" value="40" onchange="RefreshPreview()" />
 				</label>
 
 				<label>
 					<span>Circle Arc Start,End</span>
 					<br />
-					<input id="anglestart" type="number" name="anglestart" min="0" max="360" step="45" value="0" onchange="RefreshPreview()" />
+					<input id="anglestart" type="number" min="0" max="360" step="45" value="0" onchange="RefreshPreview()" />
 					,
-					<input id="angleend" type="number" name="angleend" min="0" max="360" step="45" value="360" onchange="RefreshPreview()" />
+					<input id="angleend" type="number" min="0" max="360" step="45" value="360" onchange="RefreshPreview()" />
 				</label>
 
 				<label>
 					<span>Circle Radius</span>
 					<br />
-					<input id="radius" type="text" name="radius" value="30" onchange="RefreshPreview()" />
+					<input id="radius" type="text" value="30" onchange="RefreshPreview()" />
 				</label>
 
 				<label>
 					<span>No of Steps</span>
 					<br />
-					<input id="steps" type="number" name="steps" min="1" max="256" value="12" onchange="RefreshPreview()" />
+					<input id="steps" type="number" min="1" max="256" value="12" onchange="RefreshPreview()" />
 				</label>
 
 				<label>
 					<span>Part Name</span>
 					<br />
-					<input id="part" type="text" name="part" value="LED1" onchange="RefreshPreview()" />
+					<input id="part" type="text" value="LED1" onchange="RefreshPreview()" />
 				</label>
 
 				<label>
 					<span>Rotate part enable</span>
 					<br />
-					<input id="rotateenable" type="checkbox" name="rotateenable" value="1" onchange="RefreshPreview()" />
+					<input id="rotateenable" type="checkbox" checked value="1" onchange="RefreshPreview()" />
 				</label>
 
 				<label>
 					<span>Rotate part offset</span>
 					<br />
-					<input id="rotateoffset" type="number" name="rotateoffset" min="0" max="360" step="45" value="0" onchange="RefreshPreview()" />
+					<input id="rotateoffset" type="number" min="0" max="360" step="45" value="0" onchange="RefreshPreview()" />
 				</label>
 
 				<label>
+					<span>Part type</span>
+					<br />
+					<select id="part_type" onchange="UpdateParttype()">
+					  <option value="rectangle">Rectangular</option>
+					  <option value="circle">Round</option>
+					</select>
+				</label>
+
+				<label id="part_rectangle" style="display:block">
+					<span>Part Width,Height</span>
+					<br />
+					<input id="partw" type="text" value="3" onchange="RefreshPreview()" />
+					,
+					<input id="parth" type="text" value="6" onchange="RefreshPreview()" />
+				</label>
+
+				<label id="part_circle" style="display:none">
 					<span>Part radius</span>
 					<br />
-					<input id="partradius" type="number" name="partradius" min="1" max="100" step="1" value="5" onchange="RefreshPreview()" />
+					<input id="partradius" type="number" min="1" max="100" step="1" value="2.5" onchange="RefreshPreview()" />
 				</label>
 
 			</div>
