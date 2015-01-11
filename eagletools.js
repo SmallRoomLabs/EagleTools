@@ -164,20 +164,14 @@ function RefreshPreview() {
 }
 
 
-var client = new ZeroClipboard( document.getElementById("copy-button") );
-
-function normalCmd() {
-	document.getElementById("cmd").style.fontStyle="normal";
-}
-
-client.on("ready", function (readyEvent) {
-  //alert( "ZeroClipboard SWF is ready!" );
-  client.on("aftercopy", function (event) {
-//    event.target.style.display="none";
-//    alert("Copied text to clipboard: " + event.data["text/plain"] );
-	document.getElementById("cmd").style.fontStyle="italic";
-	setTimeout(normalCmd, 500);
-  } );
-} );
+// Initialize & handle the copy-to-clipboard button functionality
+var client = new ZeroClipboard(document.getElementById("copy-button"));
+client.on("ready", function(readyEvent) {
+  client.on("aftercopy", function(event) {
+	var mycolor=document.getElementById("cmd").style.color;
+	document.getElementById("cmd").style.color="#FF0000";
+	setTimeout(function(){document.getElementById("cmd").style.color=mycolor;},300);
+  });
+});
 
 RefreshPreview();
