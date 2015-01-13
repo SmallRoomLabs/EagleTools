@@ -164,7 +164,7 @@ function RefreshPreview() {
 		ctx.stroke();
 	}
 	if (pcbtype=='circle') {
-		ctx.arc(centerX*scale, centerY*scale, pcbR*scale, 0, Math.PI*2, true);
+		ctx.arc(pcbR*scale, pcbR*scale, pcbR*scale, 0, Math.PI*2, true);
       	ctx.fill();
     }
     ctx.closePath();
