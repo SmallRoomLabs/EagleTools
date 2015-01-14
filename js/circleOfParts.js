@@ -1,30 +1,7 @@
 
-
-// Return the value of the specified form field as an float and update it back
-// to the field to remove any invalid characters
-function getAndUpdateNumericFormField(name) {
-	var v=parseFloat(document.getElementById(name).value);
-	document.getElementById(name).value=v;
-	return v;
-}
-
-
-// Return the value of the specified form field as an space trimmed string and 
-// update it back to the field trimmed
-function getAndUpdateStringFormField(name) {
-	var v=document.getElementById(name).value.trim();
-	document.getElementById(name).value=v;
-	return v;
-}
-
-
-
-
-
 // Show the relevant form fields of the desired PCB type
 function UpdatePCBtype() {
 	pcbtype=$("#pcb_type option:selected").val();
-	console.log("pcbtype=="+pcbtype);
 	$("#pcb_circle").addClass('hidden');
 	$("#pcb_rectangle").addClass('hidden');
 	if (pcbtype=="R") $("#pcb_rectangle").removeClass('hidden');
@@ -41,30 +18,6 @@ function UpdateParttype() {
 	if (parttype=="R") $("#part_rectangle").removeClass('hidden');
 	if (parttype=="C") $("#part_circle").removeClass('hidden');
 	RefreshPreview();
-}
-
-
-function drawRotatedRect(ctx, x,y,width,height,degrees) {
-    // first save the untranslated/unrotated context
-    ctx.save();
-
-    ctx.beginPath();
-    // move the rotation point to the center of the rect
-    ctx.translate( x, y );
-    // rotate the rect
-    ctx.rotate(degrees*Math.PI/180);
-
-    // draw the rect on the transformed context
-    // Note: after transforming [0,0] is visually [x,y]
-    //       so the rect needs to be offset accordingly when drawn
-    ctx.rect( -width/2, -height/2, width,height);
-
-    ctx.fillStyle=SILKCOLOR;
-    ctx.fill();
-
-    // restore the context to its untranslated/unrotated state
-    ctx.restore();
-
 }
 
 
@@ -183,20 +136,17 @@ function RefreshPreview() {
 		myPartNumber++;
 	}
 	// Insert the eagle command into the copy button and the visible div
-	document.getElementById("copy-button").setAttribute("data-clipboard-text", cmd);
+	document.getElementById("eaglecmds-button").setAttribute("data-clipboard-text", cmd);
 	document.getElementById("eaglecmds").innerHTML=cmd;
 }
 
 
 // Initialize & handle the copy-to-clipboard button functionality
-	alert('doing zero');
- var zcEagle = new ZeroClipboard(document.getElementById("copy-button"));
- console.log(zcEagle);
+ var zcEagle = new ZeroClipboard(document.getElementById("eaglecmds-button"));
  zcEagle.on("ready", function(readyEvent) {
- 	alert('zero ready');
    zcEagle.on("aftercopy", function(event) {
 	$('#eaglecmds').css({opacity: 0});
-	$('#eaglecmds').animate({opacity: 1}, 700 );
+	$('#eaglecmds').animate({opacity: 1}, 500 );
    });
  });
 

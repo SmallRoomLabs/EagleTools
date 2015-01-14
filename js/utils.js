@@ -2,6 +2,25 @@ var PCBCOLOR='#347235';
 var SILKCOLOR='#FFFFFF';
 
 
+
+// Return the value of the specified form field as an float and update it back
+// to the field to remove any invalid characters
+function getAndUpdateNumericFormField(name) {
+	var v=parseFloat($('#'+name).val());
+	$('#'+name).val(v);
+	return v;
+}
+
+
+// Return the value of the specified form field as an space trimmed string and 
+// update it back to the field trimmed
+function getAndUpdateStringFormField(name) {
+	var v=$('#'+name).val().trim();
+	$('#'+name).val(v);
+	return v;
+}
+
+
 //
 // Converts numeric degrees to radians
 //
@@ -34,3 +53,28 @@ if (typeof(Number.prototype.toStringMaxDecimals) === "undefined") {
 	}
 }
 
+
+//
+//
+//
+function drawRotatedRect(ctx, x,y,width,height,degrees) {
+    // first save the untranslated/unrotated context
+    ctx.save();
+
+    ctx.beginPath();
+    // move the rotation point to the center of the rect
+    ctx.translate( x, y );
+    // rotate the rect
+    ctx.rotate(degrees*Math.PI/180);
+
+    // draw the rect on the transformed context
+    // Note: after transforming [0,0] is visually [x,y]
+    //       so the rect needs to be offset accordingly when drawn
+    ctx.rect( -width/2, -height/2, width,height);
+
+    ctx.fillStyle=SILKCOLOR;
+    ctx.fill();
+
+    // restore the context to its untranslated/unrotated state
+    ctx.restore();
+}
