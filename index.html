@@ -1,52 +1,9 @@
 ---
+title: Eagle Scripting Tools
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- link rel="icon" href="favicon.ico" -->
-
-    <title>Eagle Layout Scripting Tools</title>
-
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    <link href="jumbotron.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
+{% include head.html %}
   <body>
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Eagle Layout Tools</a>
-        </div>
-		<div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="circleOfParts.html">CircleOfParts</a></li>
-              <li><a href="circleOfWires.html">CircleOfWires</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-           </div>
-    </nav>
-
+{% include navbar.html %}
     <div class="jumbotron">
       <div class="container">
         <h1>Eagle Layout Tools</h1>
@@ -65,11 +22,9 @@
         </div>
         <div class="col-md-4">
           <h2>Circle of lines</h2>
-          <p><img src="http://lorempixel.com/g/360/240/technics/?2"alt="Circle Of
-          Wires" class="img-rounded"></p>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-default" href="#" role="circleOfLines.thml">Circle Of
-          Wires &raquo;</a></p>
+          <p><img src="images/circleOfWires.png" alt="Circle Of Wires" class="img-rounded" width="240" height="240"></p>
+          <p>Draw a cicle/arc of a number of wire segments on any layer</p>
+          <p><a class="btn btn-default" href="#" role="circleOfWires.thml">Circle Of Wires &raquo;</a></p>
        </div>
         <div class="col-md-4">
           <h2>...</h2>

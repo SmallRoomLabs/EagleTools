@@ -46,7 +46,7 @@ function RefreshPreview() {
 	// Name of the wires to be generated
 	var wirename=getAndUpdateStringFormField("wirename");
 	// Thickness of the wires to be generated
-	var wirewidth=1.0;
+	var wirewidth=getAndUpdateNumericFormField("wirewidth");
 
 	// Calculate the correct scaling factor to utilize the maximum of the canvas size
 	if (canvasW/pcbW > canvasH/pcbH) {
@@ -69,6 +69,8 @@ function RefreshPreview() {
 	var angle=circleS;
 	var angleDelta=circleLength/angleSteps;
 
+	console.log("AngleDelta="+angleDelta);
+
 	// Clear canvas and draw the pcb
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
 	ctx.fillStyle=PCBCOLOR;
@@ -85,6 +87,8 @@ function RefreshPreview() {
 
     // Calculate and draw the parts 
 	ctx.strokeStyle=SILKCOLOR;
+	ctx.lineCap = 'square';
+	ctx.lineWidth=wirewidth*scale;
 	ctx.beginPath();
 	var cmd="set wire_bend 2;wire '"+wirename+"' "+wirewidth+" ";
 	for (var i=0; i<angleSteps+1; i++) {
@@ -99,10 +103,7 @@ function RefreshPreview() {
     	// Calculate for screen
 	    x=centerX + radius*Math.cos(angle.toRad());
     	y=centerY + radius*Math.sin(angle.toRad());
-    	// Draw the item on the screen
 		if (i==0) {
-			var xFirstCanvas=x;
-			var yFirstCanvas=y;
 			ctx.moveTo(x*scale, y*scale);
 		} else {
 			ctx.lineTo(x*scale, y*scale);
@@ -111,12 +112,11 @@ function RefreshPreview() {
 		angle+=angleDelta;
 	}
 	// Only close if full circle
-//	if (circleLength==360) {
-		ctx.lineTo(xFirstCanvas*scale, yFirstCanvas*scale);
-		cmd+="("+(+firstX.toStringMaxDecimals(3))+" "+(+firstY.toStringMaxDecimals(3))+")";
+	if (circleLength==360) {
+		ctx.closePath();
+//		cmd+="("+(+firstX.toStringMaxDecimals(3))+" "+(+firstY.toStringMaxDecimals(3))+")";
 	}
 	ctx.stroke();
-	ctx.closePath();
 	cmd+=';';
 	// Insert the eagle command into the copy button and the visible div
 	document.getElementById("eaglecmds-button").setAttribute("data-clipboard-text", cmd);

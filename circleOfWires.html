@@ -1,57 +1,9 @@
 ---
+title: CircleOfWires - Eagle Scripting Tools
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- link rel="icon" href="favicon.ico" -->
-
-    <title>Eagle Layout Scripting Tools</title>
-
-    <!--  Enable this to load from CDN
- 	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
-    -->
-    <!--  Enable this to load from local site -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <!-- -->
-
-    <link rel="stylesheet" href="css/styles.css">
-
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
+{% include head.html %}
   <body style="padding-top: 70px;">
-
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Eagle Layout Tools</a>
-        </div>
-		<div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="/">Home</a></li>
-              <li><a href="circleOfParts.html">CircleOfParts</a></li>
-              <li><a href="circleOfLines.html">CircleOfLines</a></li>
-            </ul>
-          </div><!--/.nav-collapse -->
-           </div>
-    </nav>
+{% include navbar.html %}
 
     <div class="container">
       <div class="row">
@@ -119,11 +71,26 @@
   </div>
 
   <div class="form-group">
+    <label for="wirewidth" class="control-label">Wire width</label>
+    <div style="display:block">
+      <input id="wirewidth" type="number" class="form-control formfit2" min="0.1" max="50.0" step="0.1" value="1.0" onchange="RefreshPreview()" />
+    </div>
+  </div>
+
+  <div class="form-group">
     <label for="wirename" class="control-label">Wire Name</label>
     <div style="display:block">
       <input id="wirename" type="text" class="form-control formfit2" value="wi" onchange="RefreshPreview()" />
     </div>
   </div>
+
+  <div class="form-group">
+    <label for="layer" class="control-label">Layer</label>
+    <div style="display:block">
+      <input id="layer" type="text" class="form-control formfit2" value="TOP" onchange="RefreshPreview()" />
+    </div>
+  </div>
+
 </form>
 
         </div>
@@ -145,17 +112,7 @@
       </footer>
     </div> <!-- /container -->
 
-    <!-- Bootstrap core JavaScript -->
-    <!--  Enable this to load from CDN
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-    -->
-    <!--  Enable this to load from local site -->
-      <script src="js/jquery.min.js"></script>
-      <script src="js/bootstrap.min.js"></script>
-    <!-- -->
-    <script src="js/ie10-viewport-bug-workaround.js"></script>
-    <script src="js/ZeroClipboard.min.js"></script>
+{% include footerscripts.html %}
     <script src="js/utils.js"></script>
     <script src="js/circleOfWires.js"></script>
   </body>
