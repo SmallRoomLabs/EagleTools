@@ -28,81 +28,65 @@ function RefreshPreview() {
     // Canvas size for scaling factors
     var canvasW=650;
     var canvasH=650;
-	// PCB size in mm
-	var pcbW=getAndUpdateNumericFormField("pcbw");
-	var pcbH=getAndUpdateNumericFormField("pcbh");
-	var pcbR=getAndUpdateNumericFormField("pcbr");
-	// Circle/arc center position in mm
-	var centerX=getAndUpdateNumericFormField("centerx");			
-	var centerY=getAndUpdateNumericFormField("centery");
-	// Circle/arc radius in mm
-	var radius=getAndUpdateNumericFormField("radius");
-	// Circle/arc start and end positios in degrees
-	// 0=12 o'clock, 90=3 o'clock, 180=6 o'clock
-	var circleStart=getAndUpdateNumericFormField("anglestart");
-	var circleLength=getAndUpdateNumericFormField("angleend");
-	// How many items/points should there be on the circle/arc
-	var angleSteps=getAndUpdateNumericFormField("steps");
-	// Name of the wires to be generated
-	var wirename=getAndUpdateStringFormField("wirename");
-	// Thickness of the wires to be generated
-	var wirewidth=getAndUpdateNumericFormField("wirewidth");
+
+	var F=getAllFormElements('theform');
+
+	// // PCB size in mm
+	// var pcbW=getAndUpdateNumericFormField("pcbw");
+	// var pcbH=getAndUpdateNumericFormField("pcbh");
+	// var pcbR=getAndUpdateNumericFormField("pcbr");
+	// // Circle/arc center position in mm
+	// var centerX=getAndUpdateNumericFormField("centerx");			
+	// var centerY=getAndUpdateNumericFormField("centery");
+	// // Circle/arc radius in mm
+	// var radius=getAndUpdateNumericFormField("radius");
+	// // Circle/arc start and end positios in degrees
+	// // 0=12 o'clock, 90=3 o'clock, 180=6 o'clock
+	// var circleStart=getAndUpdateNumericFormField("anglestart");
+	// var circleLength=getAndUpdateNumericFormField("angleend");
+	// // How many items/points should there be on the circle/arc
+	// var angleSteps=getAndUpdateNumericFormField("steps");
+	// // Name of the wires to be generated
+	// var wirename=getAndUpdateStringFormField("wirename");
+	// // Thickness of the wires to be generated
+	// var wirewidth=getAndUpdateNumericFormField("wirewidth");
 
 	// Calculate the correct scaling factor to utilize the maximum of the canvas size
-	if (canvasW/pcbW > canvasH/pcbH) {
-        var scale=canvasH/pcbH;
+	if (canvasW/F.pcbw > canvasH/F.pcbh) {
+        var scale=canvasH/F.pcbh;
 	} else {
-        var scale=canvasW/pcbW;
+        var scale=canvasW/F.pcbw;
 	}
 
 	var canvas=document.getElementById('preview');
 	var ctx=canvas.getContext('2d');
 
 	// Adjust the circle to have 0 degrees on top
-	var circleS=circleStart-90.0;
-
-	// If a full circle is requested then we need to reduce the step size
-	// so the first and last place dosen't overlap
-//	var fullCircleAdjust=1;
-//	if (((angleS-angleE)%360)==0) fullCircleAdjust=0;
-//	var angleDelta=(angleE-angleS)/(angleSteps-fullCircleAdjust);
+	var circleS=F.anglestart-90.0;
 	var angle=circleS;
-	var angleDelta=circleLength/angleSteps;
+	var angleDelta=F.angleend/F.steps;
 
-	console.log("AngleDelta="+angleDelta);
 
-	// Clear canvas and draw the pcb
-	ctx.clearRect(0, 0, canvas.width, canvas.height)
-	ctx.fillStyle=PCBCOLOR;
-	ctx.beginPath();
-	if (pcbtype=='R') {
-		ctx.fillRect(0, 0, pcbW*scale,pcbH*scale);
-		ctx.stroke();
-	}
-	if (pcbtype=='C') {
-		ctx.arc(pcbR*scale, pcbR*scale, pcbR*scale, 0, Math.PI*2, true);
-      	ctx.fill();
-    }
-    ctx.closePath();
+	drawBlankPCB(ctx, F, scale, PCBCOLOR);
 
     // Calculate and draw the parts 
 	ctx.strokeStyle=SILKCOLOR;
 	ctx.lineCap = 'square';
-	ctx.lineWidth=wirewidth*scale;
+	ctx.lineWidth=F.wirewidth*scale;
 	ctx.beginPath();
-	var cmd="set wire_bend 2;wire '"+wirename+"' "+wirewidth+" ";
-	for (var i=0; i<angleSteps+1; i++) {
+	var cmd="set wire_bend 2;wire '"+F.wirename+"' "+F.wirewidth+" ";
+	for (var i=0; i<F.steps+1; i++) {
 		// Calculate for Eagle
-	    var x=centerX + radius*Math.cos(angle.toRad());
-    	var y=centerY - radius*Math.sin(angle.toRad());
+	    var x=F.centerx + F.radius*Math.cos(angle.toRad());
+    	var y=F.centery - F.radius*Math.sin(angle.toRad());
     	if (i==0) {
     		var firstX=x;
     		var firstY=y;
     	}
     	cmd+="("+(+x.toStringMaxDecimals(3))+" "+(+y.toStringMaxDecimals(3))+") ";
     	// Calculate for screen
-	    x=centerX + radius*Math.cos(angle.toRad());
-    	y=centerY + radius*Math.sin(angle.toRad());
+	    x=F.centerx + F.radius*Math.cos(angle.toRad());
+    	y=F.centery + F.radius*Math.sin(angle.toRad());
 		if (i==0) {
 			ctx.moveTo(x*scale, y*scale);
 		} else {
@@ -112,7 +96,7 @@ function RefreshPreview() {
 		angle+=angleDelta;
 	}
 	// Only close if full circle
-	if (circleLength==360) {
+	if (F.angleeend==360) {
 		ctx.closePath();
 //		cmd+="("+(+firstX.toStringMaxDecimals(3))+" "+(+firstY.toStringMaxDecimals(3))+")";
 	}
@@ -139,7 +123,9 @@ function RefreshPreview() {
 
 
 
-
+//
+// Build the HTML code to put into the form 
+//
 var form='';
 
 form+=generateFormSelect('PCB type', 'pcb_type', 'UpdatePCBtype()',
@@ -148,46 +134,46 @@ form+=generateFormSelect('PCB type', 'pcb_type', 'UpdatePCBtype()',
 );
 
 form+=generateFormEntry('PCB W,H','pcb_rectangle',
-	'pcbw', 'text', null, null, null, 80, 'RefreshPreview()',
-	'pcbh', 'text', null, null, null, 80, 'RefreshPreview()'
+	'pcbw', 'number', null, null, null, 80, 'RefreshPreview()',
+	'pcbh', 'number', null, null, null, 80, 'RefreshPreview()'
 );
 
 form+=generateFormEntry('PCB Radius','pcb_circle',
-	'pcbr', 'text', null, null, null, 40, 'RefreshPreview()',
+	'pcbr', 'number', null, null, null, 40, 'RefreshPreview()',
 	null, null, null, null, null, null, null
 );
 
-form+=generateFormEntry('Circle Start,Length','circe_s_l',
+form+=generateFormEntry('Circle Start,Length','',
 	"anglestart", "number", 0, 360, 45, 0, "RefreshPreview()",
 	"angleend",   "number", 0, 360, 45, 360, "RefreshPreview()"
 );
 
-form+=generateFormEntry('Center X,Y','center_x_y',
-	"centerx", "text", null, null, null, 40, "RefreshPreview()",
-	"centery", "text", null, null, null, 40, "RefreshPreview()"
+form+=generateFormEntry('Center X,Y','',
+	"centerx", "number", null, null, null, 40, "RefreshPreview()",
+	"centery", "number", null, null, null, 40, "RefreshPreview()"
 );
 
-form+=generateFormEntry('Circle radius','circle_radius',
-	"radius", "text", null, null, null, 40, "RefreshPreview()",
+form+=generateFormEntry('Circle radius','',
+	"radius", "number", null, null, null, 40, "RefreshPreview()",
 	null, null, null, null, null, null, null
 );
 
-form+=generateFormEntry('No of steps','no_of_steps',
+form+=generateFormEntry('No of steps','',
 	"steps", "number", 1, 256, 1, 24, "RefreshPreview()",
 	null, null, null, null, null, null, null
 );
 
-form+=generateFormEntry('Wire width','wire_width',
+form+=generateFormEntry('Wire width','',
 	"wirewidth", "number", 0.1, 50.0, 0.1, 1.0, "RefreshPreview()",
 	null, null, null, null, null, null, null
 );
 
-form+=generateFormEntry('Wire Name','wire_name',
+form+=generateFormEntry('Wire Name','',
 	"wirename", "text", null, null, null, "wi", "RefreshPreview()",
 	null, null, null, null, null, null, null
 );
 
-form+=generateFormEntry('Layer','the_layer',
+form+=generateFormEntry('Layer','',
 	"layer", "text", null, null, null, "TOP", "RefreshPreview()",
 	null, null, null, null, null, null, null
 );
