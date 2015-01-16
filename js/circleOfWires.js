@@ -134,6 +134,67 @@ function RefreshPreview() {
  });
 
 
+
+
+
+
+
+
+var form='';
+
+form+=generateFormSelect('PCB type', 'pcb_type', 'UpdatePCBtype()',
+	'R','Rectangular',
+	'C','Circular'
+);
+
+form+=generateFormEntry('PCB W,H','pcb_rectangle',
+	'pcbw', 'text', null, null, null, 80, 'RefreshPreview()',
+	'pcbh', 'text', null, null, null, 80, 'RefreshPreview()'
+);
+
+form+=generateFormEntry('PCB Radius','pcb_circle',
+	'pcbr', 'text', null, null, null, 40, 'RefreshPreview()',
+	null, null, null, null, null, null, null
+);
+
+form+=generateFormEntry('Circle Start,Length','circe_s_l',
+	"anglestart", "number", 0, 360, 45, 0, "RefreshPreview()",
+	"angleend",   "number", 0, 360, 45, 360, "RefreshPreview()"
+);
+
+form+=generateFormEntry('Center X,Y','center_x_y',
+	"centerx", "text", null, null, null, 40, "RefreshPreview()",
+	"centery", "text", null, null, null, 40, "RefreshPreview()"
+);
+
+form+=generateFormEntry('Circle radius','circle_radius',
+	"radius", "text", null, null, null, 40, "RefreshPreview()",
+	null, null, null, null, null, null, null
+);
+
+form+=generateFormEntry('No of steps','no_of_steps',
+	"steps", "number", 1, 256, 1, 24, "RefreshPreview()",
+	null, null, null, null, null, null, null
+);
+
+form+=generateFormEntry('Wire width','wire_width',
+	"wirewidth", "number", 0.1, 50.0, 0.1, 1.0, "RefreshPreview()",
+	null, null, null, null, null, null, null
+);
+
+form+=generateFormEntry('Wire Name','wire_name',
+	"wirename", "text", null, null, null, "wi", "RefreshPreview()",
+	null, null, null, null, null, null, null
+);
+
+form+=generateFormEntry('Layer','the_layer',
+	"layer", "text", null, null, null, "TOP", "RefreshPreview()",
+	null, null, null, null, null, null, null
+);
+
+
+$("#theform").html(form);
+
 var parttype='R';
 var pcbtype='R';
 UpdateParttype();
