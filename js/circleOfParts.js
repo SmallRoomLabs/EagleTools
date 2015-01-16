@@ -151,6 +151,131 @@ function RefreshPreview() {
  });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var form='';
+
+
+form+=generateFormSelect('PCB type', 'pcb_type', 'UpdatePCBtype()',
+	'R','Rectangular',
+	'C','Circular'
+);
+
+	form+=generateFormEntry('PCB W,H','pcb_rectangle',
+		'pcbw', 'text', null, null, null, 80, 'RefreshPreview()',
+		'pcbh', 'text', null, null, null, 80, 'RefreshPreview()'
+	);
+
+	form+=generateFormEntry('PCB Radius','pcb_circle',
+		'pcbr', 'text', null, null, null, 40, 'RefreshPreview()',
+		null, null, null, null, null, null, null
+	);
+
+form+=generateFormEntry('Circle Start,Length','circe_s_l',
+	"anglestart", "number", 0, 360, 45, 0, "RefreshPreview()",
+	"angleend",   "number", 0, 360, 45, 360, "RefreshPreview()"
+);
+
+form+=generateFormEntry('Center X,Y','center_x_y',
+	"centerx", "text", null, null, null, 40, "RefreshPreview()",
+	"centery", "text", null, null, null, 40, "RefreshPreview()"
+);
+
+form+=generateFormEntry('Circle radius','circle_radius',
+	"radius", "text", null, null, null, 40, "RefreshPreview()",
+	null, null, null, null, null, null, null
+);
+
+form+=generateFormEntry('No of steps','no_of_steps',
+	"steps", "number", 1, 256, 1, 24, "RefreshPreview()",
+	null, null, null, null, null, null, null
+);
+
+form+=generateFormEntry('Part Name','part_name',
+		"part", "text", null, null, null, "LED1", "RefreshPreview()",
+		null, null, null, null, null, null, null
+);
+
+// TODO : Replace this with a checkbox generator
+form+=generateFormSelect('Rotate part enable', 'rotateenable', 'RefreshPreview()',
+	'0','Disabled',
+	'1','Enabled'
+);
+
+form+=generateFormEntry('Rotate part offset','rotate_part_offset',
+		"rotateoffset", "number", 0, 360, 45, 0, "RefreshPreview()",
+		null, null, null, null, null, null, null
+);
+
+form+=generateFormSelect('Part type', 'part_type', 'UpdateParttype()',
+	'R','Rectangular',
+	'C','Circular'
+);
+
+	form+=generateFormEntry('Part Width,Height','part_rectangle',
+		"partw", "text", null, null, null, 3, "RefreshPreview()",
+		"parth", "text", null, null, null, 6, "RefreshPreview()"
+	);
+
+	form+=generateFormEntry('Part Radius','part_circle',
+		"partradius", "number", 1, 100, 0.5, 2.5, "RefreshPreview()",
+		null, null, null, null, null, null, null
+	);
+
+
+
+
+// form+=generateFormEntry('Wire width','wire_width',
+// 	"wirewidth", "number", 0.1, 50.0, 0.1, 1.0, "RefreshPreview()",
+// 	null, null, null, null, null, null, null
+// );
+
+// form+=generateFormEntry('Wire Name','wire_name',
+// 	"wirename", "text", null, null, null, "wi", "RefreshPreview()",
+// 	null, null, null, null, null, null, null
+// );
+
+// form+=generateFormEntry('Layer','the_layer',
+// 	"layer", "text", null, null, null, "TOP", "RefreshPreview()",
+// 	null, null, null, null, null, null, null
+// );
+
+
+$("#theform").html(form);
+
+
+
+
+
+
+
+
+
+
 var parttype='R';
 var pcbtype='R';
 UpdateParttype();
