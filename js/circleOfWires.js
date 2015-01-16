@@ -28,28 +28,7 @@ function RefreshPreview() {
     // Canvas size for scaling factors
     var canvasW=650;
     var canvasH=650;
-
 	var F=getAllFormElements('theform');
-
-	// // PCB size in mm
-	// var pcbW=getAndUpdateNumericFormField("pcbw");
-	// var pcbH=getAndUpdateNumericFormField("pcbh");
-	// var pcbR=getAndUpdateNumericFormField("pcbr");
-	// // Circle/arc center position in mm
-	// var centerX=getAndUpdateNumericFormField("centerx");			
-	// var centerY=getAndUpdateNumericFormField("centery");
-	// // Circle/arc radius in mm
-	// var radius=getAndUpdateNumericFormField("radius");
-	// // Circle/arc start and end positios in degrees
-	// // 0=12 o'clock, 90=3 o'clock, 180=6 o'clock
-	// var circleStart=getAndUpdateNumericFormField("anglestart");
-	// var circleLength=getAndUpdateNumericFormField("angleend");
-	// // How many items/points should there be on the circle/arc
-	// var angleSteps=getAndUpdateNumericFormField("steps");
-	// // Name of the wires to be generated
-	// var wirename=getAndUpdateStringFormField("wirename");
-	// // Thickness of the wires to be generated
-	// var wirewidth=getAndUpdateNumericFormField("wirewidth");
 
 	// Calculate the correct scaling factor to utilize the maximum of the canvas size
 	if (canvasW/F.pcbw > canvasH/F.pcbh) {
@@ -113,7 +92,7 @@ function RefreshPreview() {
  zcEagle.on("ready", function(readyEvent) {
    zcEagle.on("aftercopy", function(event) {
 	$('#eaglecmds').css({opacity: 0});
-	$('#eaglecmds').animate({opacity: 1}, 500 );
+	$('#eaglecmds').animate({opacity: 1}, 300);
    });
  });
 
