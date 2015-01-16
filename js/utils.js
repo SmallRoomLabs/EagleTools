@@ -32,6 +32,14 @@ if (typeof(Number.prototype.toRad) === "undefined") {
 
 
 //
+//
+//
+function randomId() {
+	return 'id_'+parseInt(Math.random()*1000000000)+'_'+parseInt(Math.random()*1000000000);
+}
+
+
+//
 // Converts a number to maximum X decimals and removes trailing
 // zeros and the decimal dot if possible
 //
@@ -96,6 +104,7 @@ function generateFormEntry(
 		id1, type1, min1, max1, step1, val1, onchange1,
 		id2, type2, min2, max2, step2, val2, onchange2
 	) {
+	if (id0=='') id0=randomId();
 	var html='';
 	html+='<div class="form-group" id="'+id0+'">'+CRLF;
 	html+='  <label for="'+id1+'" class="control-label">'+label+'</label>'+CRLF;
@@ -124,8 +133,11 @@ function generateFormEntry(
 }
 
 
-
+//
+//
+//
 function generateFormSelect(label, id, onchange) {
+	if (id=='') id=randomId();
 	var html='';
 	html+='<div class="form-group">'+CRLF;
     html+='<label for="'+id+'" class="control-label">'+label+'</label>'+CRLF;
@@ -136,4 +148,19 @@ function generateFormSelect(label, id, onchange) {
     html+='  </select>'+CRLF;
     html+='</div>'+CRLF;
     return html;
+}
+
+
+//
+//
+//
+function getAllFormElements(formname) {
+	var F = {};
+	var elem = document.getElementById(formname).elements;
+	for (var i=0; i<elem.length; i++) {
+		if (elem[i].type=='number') F[elem[i].id]=parseFloat(elem[i].value);
+		if (elem[i].type=='text') F[elem[i].id]=elem[i].value.trim();
+		if (elem[i].type=='select-one') F[elem[i].id]=elem[i].value;
+	}
+	return F;
 }
