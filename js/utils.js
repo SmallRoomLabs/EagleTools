@@ -171,20 +171,20 @@ function getAllFormElements(formname) {
 //
 //
 //
-function drawBlankPCB(canvas, data, scale, color) {
+function drawBlankPCB(ctx, data, scale, color) {
 	// Clear canvas and draw the pcb
-	canvas.clearRect(0, 0, canvas.width, canvas.height)
-	canvas.fillStyle=color;
-	canvas.beginPath();
+	ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.clientHeight);
+	ctx.fillStyle=color;
+	ctx.beginPath();
 	if (data.pcb_type=='R') {
-		canvas.fillRect(0, 0, data.pcbw*scale, data.pcbh*scale);
-		canvas.stroke();
+		ctx.fillRect(0, 0, data.pcbw*scale, data.pcbh*scale);
+		ctx.stroke();
 	}
 	if (data.pcb_type=='C') {
-		canvas.arc(data.pcbr*scale, data.pcbr*scale, data.pcbr*scale, 0, Math.PI*2, true);
-      	canvas.fill();
+		ctx.arc(data.pcbr*scale, data.pcbr*scale, data.pcbr*scale, 0, Math.PI*2, true);
+      	ctx.fill();
     }
-    canvas.closePath();
+    ctx.closePath();
 }
 
 
