@@ -28,7 +28,6 @@ function RefreshPreview() {
 
 	var canvas=document.getElementById('preview');
 	var ctx=canvas.getContext('2d');
-	console.log(ctx.canvas.clientHeight);
 
 	// Adjust the circle to have 0 degrees on top
 	var circleS=F.anglestart-90.0;
@@ -39,31 +38,39 @@ function RefreshPreview() {
  	drawBlankPCB(ctx, F, scale, PCBCOLOR);
 
     // Calculate and draw the parts 
-	ctx.strokeStyle=SILKCOLOR;
+	ctx.font = F.textsize*10+'px "Courier New", Courier, monospace';
+	ctx.fillStyle = SILKCOLOR;
 	ctx.beginPath();
-	var cmd="set wire_bend 2;wire '"+F.wirename+"' "+F.wirewidth+" ";
-	for (var i=0; i<F.text.length+1; i++) {
+	var cmd="";//"set wire_bend 2;wire '"+F.wirename+"' "+F.wirewidth+" ";
+	for (var i=0; i<F.text.length; i++) {
 		// // Calculate for Eagle
-	 //    var x=F.centerx + F.radius*Math.cos(angle.toRad());
-  //   	var y=F.centery - F.radius*Math.sin(angle.toRad());
+	    var x=F.centerx + F.radius*Math.cos(angle.toRad());
+     	var y=F.centery - F.radius*Math.sin(angle.toRad());
   //   	if (i==0) {
   //   		var firstX=x;
   //   		var firstY=y;
   //   	}
   //   	cmd+="("+(+x.toStringMaxDecimals(3))+" "+(+y.toStringMaxDecimals(3))+") ";
+ 
+  		cmd+="text '"+F.text.substring(i,i+1)+"'  R"+(-angle-90).toStringMaxDecimals(3)+" ("+x.toStringMaxDecimals(3)+" "+y.toStringMaxDecimals(3)+") ;";
   //   	// Calculate for screen
-	 //    x=F.centerx + F.radius*Math.cos(angle.toRad());
-  //   	y=F.centery + F.radius*Math.sin(angle.toRad());
-		// if (i==0) {
-		// 	ctx.moveTo(x*scale, y*scale);
-		// } else {
-		// 	ctx.lineTo(x*scale, y*scale);
-		// }
-		// // Update angle on circle/arc, component rotation and component name
-		// angle+=angleDelta;
+	    x=F.centerx + F.radius*Math.cos(angle.toRad());
+  	   	y=F.centery + F.radius*Math.sin(angle.toRad());
+		ctx.save();
+		ctx.translate((x-0)*scale,y*scale);
+		ctx.rotate((angle+90).toRad());
+		ctx.fillText(F.text.substring(i,i+1) ,0,0);
+		ctx.restore();
+
+		if (i==0) {
+			ctx.moveTo(x*scale, y*scale);
+		} else {
+			ctx.lineTo(x*scale, y*scale);
+		}
+		// Update angle on circle/arc, component rotation and component name
+		angle+=angleDelta;
 	}
 	ctx.stroke();
-	cmd+=';';
 
 	// Insert the eagle command into the copy button and the visible div
 	document.getElementById("eaglecmds-button").setAttribute("data-clipboard-text", cmd);
@@ -117,7 +124,7 @@ form+=generateFormEntry('Center X,Y','',
 );
 
 form+=generateFormEntry('Circle radius','',
-	"radius", "number", null, null, null, 40, "RefreshPreview()",
+	"radius", "number", null, null, null, 35, "RefreshPreview()",
 	null, null, null, null, null, null, null
 );
 
@@ -127,7 +134,7 @@ form+=generateFormEntry('Text','',
 );
 
 form+=generateFormEntry('Text size','',
-	"textsize", "number", 0.5, 20.0, 0.5, 5.0, "RefreshPreview()",
+	"textsize", "number", 0.5, 20.0, 0.5, 4.0, "RefreshPreview()",
 	null, null, null, null, null, null, null
 );
 
