@@ -32,7 +32,11 @@ function RefreshPreview() {
 	// Adjust the circle to have 0 degrees on top
 	var circleS=F.anglestart-90.0;
 	var angle=circleS;
-	var angleDelta=F.angleend/F.text.length;
+	if (F.angleend==360) {
+		var angleDelta=F.angleend/(F.text.length);
+	} else {
+		var angleDelta=F.angleend/(F.text.length-1);
+	}
 
 
  	drawBlankPCB(ctx, F, scale, PCBCOLOR);
