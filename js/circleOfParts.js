@@ -71,7 +71,6 @@ function RefreshPreview() {
 	var partAngle=-F.rotateoffset;
 
 	drawBlankPCB(ctx, F, scale, PCBCOLOR);
-
     // Calculate and draw the parts 
 	ctx.fillStyle=SILKCOLOR;
 	ctx.strokeStyle=SILKCOLOR;
@@ -82,10 +81,10 @@ function RefreshPreview() {
 	    var x=F.centerx + F.radius*Math.cos(angle.toRad());
     	var y=F.centerx - F.radius*Math.sin(angle.toRad());
     	cmd+="mov '"+myPart+myPartNumber+"' ("+(+x.toStringMaxDecimals(3))+" "+(+y.toStringMaxDecimals(3))+");";
-    	if (F.enable) cmd+="ro =R"+partAngle.toStringMaxDecimals(3)+" '"+myPart+myPartNumber+"';";
+    	if (F.rotateenable=='1') cmd+="ro =R"+partAngle.toStringMaxDecimals(3)+" '"+myPart+myPartNumber+"';";
     	// Calculate for screen
-	    x=F.centerx + radius*Math.cos(angle.toRad());
-    	y=F.centery + radius*Math.sin(angle.toRad());
+	    x=F.centerx + F.radius*Math.cos(angle.toRad());
+    	y=F.centery + F.radius*Math.sin(angle.toRad());
     	// Draw the item on the screen
 		ctx.beginPath();
 		if (F.part_type=="R") {
@@ -97,7 +96,7 @@ function RefreshPreview() {
 		ctx.closePath();
 		// Update angle on circle/arc, component rotation and component name
 		angle+=angleDelta;
-		partAngle-=angleDelta;
+    	if (F.rotateenable=='1') partAngle-=angleDelta;
 		myPartNumber++;
 	}
 	// Insert the eagle command into the copy button and the visible div
@@ -162,9 +161,9 @@ form+=generateFormEntry('Part Name','',
 );
 
 // TODO : Replace this with a checkbox generator
-form+=generateFormSelect('Rotate part enable', 'rotateenable', 'RefreshPreview()',
-	'0','Disabled',
-	'1','Enabled'
+form+=generateFormSelect('Rotate part', 'rotateenable', 'RefreshPreview()',
+	'1','Yes',
+	'0','No'
 );
 
 form+=generateFormEntry('Rotate part offset','',
